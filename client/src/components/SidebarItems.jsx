@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import HomeIcon from '@mui/icons-material/Home';
-import CategoryIcon from '@mui/icons-material/Category';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { Settings } from '@mui/icons-material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -10,8 +9,6 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 const SidebarItems = ({ toggleSidebar }) => { // Accept toggleSidebar as a prop
     const navItems = [
         { name: "Dashboard", icon: <HomeIcon />, link: "/dashboard" },
-        { name: "Inventory", icon: <CategoryIcon />, link: "/inventory" },
-       
     ];
 
     const profileItems = [
