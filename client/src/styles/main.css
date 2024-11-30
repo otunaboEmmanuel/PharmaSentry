@@ -1,0 +1,84 @@
+body {
+  margin: 0;
+  min-height: 100vh;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+.register-left {
+  flex: 1;
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  justify-content: center;
+}
+.register-left input, .login-right input {
+  border: none;
+  border-bottom: 1px solid lightgray;
+  padding: 20px 10px;
+  color: black;
+}
+
+.register-left button {
+  width: 50%;
+  padding: 10px;
+  border: none;
+  background-color: #938eef;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 20px;
+}
+.register-right,
+.login-left {
+  background-size: cover;
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  color: white;
+
+}
+.register-right {
+  background: linear-gradient(rgba(39, 11, 96, 0.5), rgba(39, 11, 96, 0.5)),
+    url("https://fcthhss.abj.gov.ng/site/wp-content/uploads/2021/12/32433345435.jpg")
+      center;
+  background-size: cover;
+  border-top-right-radius: 16px;
+  border-bottom-right-radius: 16px;
+}
+.card {
+  height: 35rem;
+}
+.login-left {
+  background: linear-gradient(rgba(39, 11, 96, 0.5), rgba(39, 11, 96, 0.5)),
+    url("https://d2jx2rerrg6sh3.cloudfront.net/image-handler/ts/20210121091000/ri/673/picture/2021/1/shutterstock_544348294.jpg")
+      center;
+  background-size: cover;
+  border-top-left-radius: 16px;
+  border-bottom-left-radius: 16px;
+}
+.login-right {
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  color: white;
+}
+.login-right button {
+  width: 50%;
+  padding: 10px;
+  border: none;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 20px;
+}
+.css-1umw9bq-MuiSvgIcon-root{
+ color: grey; 
+  /* padding-left: 1rem; */
+}
+.css-1nowbqt-MuiInputAdornment-root{
+  width: 0;
+  padding: 0 0.75rem;
+}
