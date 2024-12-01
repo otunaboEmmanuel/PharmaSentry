@@ -20,12 +20,14 @@ const Login = () => {
     const [toastOpen, setToastOpen] = useState(false); // State for toast visibility
     const [toastSeverity, setToastSeverity] = useState("success");
     const [showPassword, setShowPassword] = useState(false);
+    const [loading, setLoading] = useState(false); // Loading state
     const auth = useAuth();
-    const { setUser } = auth;
+    const { setUser  } = auth;
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true); // Set loading to true
 
         try {
             const res = await fetch("http://localhost:8800/server/auth/login", {
@@ -41,8 +43,8 @@ const Login = () => {
 
             if (res.ok) {
                 // Set the user in the Auth context
-                setUser({ id: data.id, email: data.email });
-                setToastMessage(data.message); // Set the toast message
+                setUser ({ id: data.id, email: data.email });
+                setToastMessage("Login successful!"); // Set the toast message
                 setToastSeverity("success"); // Set severity to success
                 setToastOpen(true); // Show the toast
                 navigate("/dashboard");
@@ -57,8 +59,11 @@ const Login = () => {
             setToastMessage("An error occurred. Please try again."); // Set a generic error message
             setToastSeverity("error"); // Set severity to error
             setToastOpen(true); // Show the toast
+        } finally {
+            setLoading(false); // Reset loading state
         }
     };
+
     const handleClickShowPassword = () => setShowPassword((show) => !show);
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
@@ -133,6 +138,7 @@ const Login = () => {
                             type="submit"
                             variant="contained"
                             color="primary"
+                            disabled={loading} // Disable button while loading
                             sx={{
                                 backgroundColor: "#663399", // Default background color
                                 '&:hover': {
@@ -140,13 +146,13 @@ const Login = () => {
                                 }
                             }}
                         >
-                            Login
+                            {loading ? "Logging in..." : "Login"}
                         </Button>
                     </form>
                 </div>
             </div>
             <Snackbar open={toastOpen} autoHideDuration={6000} onClose={handleToastClose}>
-                <Alert on Close={handleToastClose} severity={toastSeverity} sx={{ width: '100%' }}>
+                <Alert onClose={handleToastClose} severity={toastSeverity} sx={{ width: '100%' }}>
                     {toastMessage}
                 </Alert>
             </Snackbar>
