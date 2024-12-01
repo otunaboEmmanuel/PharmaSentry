@@ -4,33 +4,43 @@ import jwt from "jsonwebtoken";
 
 
 
-export const register = (req, res) => {
-    //CHECK USER IF EXISTS
+export const register = async (req, res) => {
+    const { username, email, password, name } = req.body;
 
-    const q = "SELECT * FROM users WHERE username = ?"
+    // Check if all required fields are provided
+    if (!username || !email || !password || !name) {
+        return res.status(400).json("All fields are required.");
+    }
 
-    db.query(q,[req.body.username], (err,data) =>
-    {
-        if(err) return res.status(500).json(err)
-        if(data.length) return res.status(409).json("User already exists!")
+    // Check if user already exists
+    const q = "SELECT * FROM users WHERE username = ?";
+    
+    db.query(q, [username], async (err, data) => {
+        if (err) {
+            console.error("Database query error:", err);
+            return res.status(500).json("Internal server error.");
+        }
+        
+        if (data.length) {
+            return res.status(409).json("User  already exists!");
+        }
 
-        //CREATE A NEW USER
-        //Hash the password
-        const salt = bcrypt.genSaltSync(10);
-        const hashedPassword = bcrypt.hashSync(req.body.password, salt)
+        // Hash the password
+        const hashedPassword = await bcrypt.hash(password, 10);
 
-        const q = "INSERT INTO users  (username, email, password, name) VALUES (?)"
+        // Create a new user
+        const q = "INSERT INTO users (username, email, password, name) VALUES (?, ?, ?, ?)";
+        const values = [username, email, hashedPassword, name];
 
-        const values = [req.body.username,req.body.email,hashedPassword,req.body.name]
-
-        db.query(q, [values], (err,data)=> {
-            if(err) return res.status(500).json(err)
-            return res.status(200).json("User has been created.");
+        db.query(q, values, (err, result) => {
+            if (err) {
+                console.error("Error inserting user:", err);
+                return res.status(500).json("Internal server error.");
+            }
+            return res.status(201).json("User  has been created.");
         });
     });
-
-}
-
+};
 
 //LOGIN
 //LOGIN
