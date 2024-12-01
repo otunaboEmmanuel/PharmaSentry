@@ -20,6 +20,8 @@ app.use(
 );
 app.use(cookieParser());
 app.use(express.json());
+import bodyParser from'body-parser';
+app.use(bodyParser.json());
 
 // Sync database and create tables
 db.sequelize

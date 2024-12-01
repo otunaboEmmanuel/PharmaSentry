@@ -35,15 +35,10 @@ const Patient = (sequelize) => {
             type: DataTypes.STRING,
             allowNull: true,
         },
-        CreatedAt: {
-            type: DataTypes.DATE,
-            defaultValue: DataTypes.NOW,
-        },
-        UpdatedAt: {
-            type: DataTypes.DATE,
-            defaultValue: DataTypes.NOW,
-        },
+    }, {
+        timestamps: true,
     });
 };
+
 
 export default Patient;

@@ -10,7 +10,7 @@ import CommunityResource from "./CommunityResource.js"; // Ensure the correct pa
 import Feedback from "./Feedback.js"; // Ensure the correct path and filename
 
 // Replace with your database credentials
-const sequelize = new Sequelize("database_name", "username", "password", {
+const sequelize = new Sequelize("pharma_sentry", "root", "8597", {
     host: "localhost",
     dialect: "mysql", // or 'postgres' for PostgreSQL
 });

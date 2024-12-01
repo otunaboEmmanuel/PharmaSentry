@@ -19,18 +19,12 @@ const User = (sequelize) => {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        Role: {
+        Name: {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        CreatedAt: {
-            type: DataTypes.DATE,
-            defaultValue: DataTypes.NOW,
-        },
-        UpdatedAt: {
-            type: DataTypes.DATE,
-            defaultValue: DataTypes.NOW,
-        },
+    }, {
+        timestamps: true,
     });
 };
 
