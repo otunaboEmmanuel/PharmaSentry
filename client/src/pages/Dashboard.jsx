@@ -6,10 +6,10 @@ const Dashboard = () => {
     <>
       <div className="w-auto bg-[#c1beff] sm:ml-0 min-h-screen">
         <div className='flex flex-row'>
-          <Sidebar/>
+          <Sidebar />
         </div>
-        <div>
-          
+        <div className='Container'>
+
         </div>
       </div>
     </>

@@ -12,7 +12,8 @@ body {
   gap: 50px;
   justify-content: center;
 }
-.register-left input, .login-right input {
+.register-left input,
+.login-right input {
   border: none;
   border-bottom: 1px solid lightgray;
   padding: 20px 10px;
@@ -37,7 +38,6 @@ body {
   flex-direction: column;
   gap: 30px;
   color: white;
-
 }
 .register-right {
   background: linear-gradient(rgba(39, 11, 96, 0.5), rgba(39, 11, 96, 0.5)),
@@ -74,11 +74,11 @@ body {
   cursor: pointer;
   border-radius: 20px;
 }
-.css-1umw9bq-MuiSvgIcon-root{
- color: grey; 
+.css-1umw9bq-MuiSvgIcon-root {
+  color: #663399;
   /* padding-left: 1rem; */
 }
-.css-1nowbqt-MuiInputAdornment-root{
+.css-1nowbqt-MuiInputAdornment-root {
   width: 0;
   padding: 0 0.75rem;
 }
