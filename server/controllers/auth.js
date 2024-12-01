@@ -29,7 +29,7 @@ export const register = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         // Create a new user
-        const q = "INSERT INTO users (username, email, password, name) VALUES (?, ?, ?, ?)";
+        const q = "INSERT INTO users (username, email, password, name, createdAt, updatedAt) VALUES (?, ?, ?, ?, NOW(), NOW())";
         const values = [username, email, hashedPassword, name];
 
         db.query(q, values, (err, result) => {
@@ -42,7 +42,6 @@ export const register = async (req, res) => {
     });
 };
 
-//LOGIN
 //LOGIN
 export const login = (req, res) => {
     const q = "SELECT * FROM users WHERE email = ?"; // Change this line
