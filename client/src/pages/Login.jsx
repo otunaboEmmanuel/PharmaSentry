@@ -22,7 +22,7 @@ const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false); // Loading state
     const auth = useAuth();
-    const { setUser  } = auth;
+    const { setUser } = auth;
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -35,9 +35,9 @@ const Login = () => {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ 
-                    email: email, 
-                    password: password 
+                body: JSON.stringify({
+                    email,
+                    password
                 }),
             });
 
@@ -46,7 +46,7 @@ const Login = () => {
 
             if (res.ok) {
                 // Set the user in the Auth context
-                setUser ({ id: data.id, email: data.email });
+                setUser({ id: data.id, email: data.email });
                 setToastMessage("Login successful!"); // Set the toast message
                 setToastSeverity("success"); // Set severity to success
                 setToastOpen(true); // Show the toast

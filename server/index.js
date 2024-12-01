@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import bodyParser from 'body-parser';
 import db from "./models/index.js"; // Ensure this points to your models/index.js
 import userRoutes from "./routes/users.js";
 import substancesRoutes from "./routes/substances.js";
@@ -20,14 +21,16 @@ app.use(
 );
 app.use(cookieParser());
 app.use(express.json());
-import bodyParser from'body-parser';
 app.use(bodyParser.json());
 
-// Sync database and create tables
+// Sync database and create tables without dropping existing ones
 db.sequelize
-    .sync({ force: true }) // Use { force: true } only in development to drop and recreate tables
+    .sync({ alter: true }) // Use { alter: true } to update the schema without dropping tables
     .then(() => {
         console.log("Database & tables created!");
+    })
+    .catch(err => {
+        console.error("Error creating database & tables:", err);
     });
 
 // Routes

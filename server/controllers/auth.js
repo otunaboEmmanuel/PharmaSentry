@@ -58,17 +58,19 @@ export const login = (req, res) => {
         const user = data[0];
         console.log("User  data:", user); // Log the user data
 
-        if (!user.password) {
+        // Check if the password field exists
+        if (!user.Password) {
             return res.status(500).json("Password not found in the database.");
         }
 
-        const checkPassword = bcrypt.compareSync(req.body.password, user.password);
+        // Compare the provided password with the hashed password
+        const checkPassword = bcrypt.compareSync(req.body.password, user.Password);
 
         if (!checkPassword) {
             return res.status(400).json("Wrong password or username!");
         }
 
-        const token = jwt.sign({ id: user.id }, "secretkey", { expiresIn: "1h" });
+        const token = jwt.sign({ id: user.UserID }, "secretkey", { expiresIn: "1h" });
 
         const { password, ...others } = user;
 
