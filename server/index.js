@@ -9,8 +9,10 @@ import incidentRoutes from "./routes/incident.js";
 import incident_substancesRoutes from "./routes/incident_substances.js";
 import facilitiesRoutes from "./routes/facilities.js";
 import authRoutes from "./routes/auth.js";
+import overviewRouter from "./routes/overview.js"; // Import the overview routes
 
 const app = express();
+const PORT = process.env.PORT || 8800; // Set the port
 
 // Middleware
 app.use(
@@ -40,9 +42,9 @@ app.use("/server/incident", incidentRoutes);
 app.use("/server/incident_substances", incident_substancesRoutes);
 app.use("/server/facilities", facilitiesRoutes);
 app.use("/server/auth", authRoutes);
+app.use("/server/overview", overviewRouter); // Add the overview routes
 
 // Start the server
-const PORT = process.env.PORT || 8800; // Changed to 8800 as per your last line
 app.listen(PORT, () => {
     console.log(`API working on port ${PORT}!`);
 });
