@@ -5,20 +5,21 @@ import Sidebar from '../components/Sidebar';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button } from '@mui/material';
 
 const PatientManagement = ({ toggleSidebar, sidebarOpen }) => {
-    const [users, setUsers] = useState([]);
-    const [newUser, setNewUser] = useState({ username: '', email: '', password: '', role: '' });
-    const [editingUser, setEditingUser] = useState(null);
+    const [patient, setPatient] = useState([]);
+    const [newPatient, setNewPatient] = useState({ FirstName: '', LastName: '', DateOfBirth: '', Gender: '', Address: '', PhoneNumber: '', Email: '' });
+    const [editingPatient, setEditingPatient] = useState(null);
     const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
-    const [userToDelete, setUserToDelete] = useState(null);
+    const [PatientToDelete, setPatientToDelete] = useState(null);
 
-    const getUsers = async () => {
+    const getPatient = async () => {
         try {
-            const res = await fetch("http://localhost:3000/api/v1/users", {
+            const res = await fetch("http://localhost:8800/server/patient", {
                 method: "GET",
             });
             if (res.ok) {
                 const data = await res.json();
-                setUsers(data);
+                console.log(data)
+                setPatient(data);
             } else {
                 console.error("Failed to fetch users:", res.statusText);
             }
@@ -28,64 +29,65 @@ const PatientManagement = ({ toggleSidebar, sidebarOpen }) => {
     };
 
     useEffect(() => {
-        getUsers();
+        getPatient();
     }, []);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        if (editingUser) {
-            setEditingUser({ ...editingUser, [name]: value });
+        if (editingPatient) {
+            setEditingPatient({ ...editingPatient, [name]: value });
         } else {
-            setNewUser({ ...newUser, [name]: value });
+            setNewPatient({ ...newPatient, [name]: value });
         }
     };
 
-    const handleAddUser = async (e) => {
+    const handleAddPatient = async (e) => {
         e.preventDefault();
-        if (newUser.username && newUser.email && newUser.password && newUser.role) {
+        if (Object.values(newPatient).every((field) => field.trim())) {
             try {
-                const response = await fetch('http://localhost:3000/api/v1/users/register', {
-                    method: 'POST',
+                const response = await fetch("http://localhost:8800/server/patient", {
+                    method: "POST",
                     headers: {
-                        'Content-Type': 'application/json',
+                        "Content-Type": "application/json",
                     },
-                    body: JSON.stringify(newUser),
+                    body: JSON.stringify(newPatient),
                 });
 
                 if (response.ok) {
-                    const createdUser = await response.json();
-                    setUsers([...users, createdUser]);
-                    setNewUser({ username: '', email: '', password: '', role: '' });
+                    const createdPatient = await response.json();
+                    setPatient([...patient, createdPatient]);
+                    setNewPatient({ FirstName: "", LastName: "", DateOfBirth: "", Gender: "", Address: "", PhoneNumber: "", Email: "" });
                 } else {
-                    console.error("Failed to add user:", response.statusText);
+                    console.error("Failed to add patient:", response.statusText);
                 }
             } catch (error) {
-                console.error("Error adding user:", error);
+                console.error("Error adding patient:", error.message);
             }
         } else {
             console.error("Please fill in all fields.");
         }
     };
 
-    const handleEditUser = (user) => {
-        setEditingUser(user);
+
+    const handleEditPatient = (patient) => {
+        setEditingPatient(patient);
     };
 
-    const handleUpdateUser = async (e) => {
+    const handleUpdatePatient = async (e) => {
         e.preventDefault();
-        if (editingUser) {
+        if (editingPatient) {
             try {
-                const response = await fetch(`http://localhost:3000/api/v1/users/${editingUser.id}`, {
+                const response = await fetch(`http://localhost:8800/server/patient${editingPatient.id}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify(editingUser),
+                    body: JSON.stringify(editingPatient),
                 });
 
                 if (response.ok) {
-                    setUsers(users.map(user => (user.id === editingUser.id ? editingUser : user)));
-                    setEditingUser(null);
+                    setPatient(patient.map(patient => (patient.id === editingPatient.id ? editingPatient : patient)));
+                    setEditingPatient(null);
                 } else {
                     console.error("Failed to update user:", response.statusText);
                 }
@@ -95,26 +97,26 @@ const PatientManagement = ({ toggleSidebar, sidebarOpen }) => {
         }
     };
 
-    const handleDeleteUser = (id) => {
-        setUserToDelete(id);
+    const handleDeletePatient = (id) => {
+        setPatientToDelete(id);
         setConfirmDeleteOpen(true);
     };
 
     const confirmDelete = async () => {
         try {
-            const response = await fetch(`http://localhost:3000/api/v1/users/${userToDelete}`, {
+            const response = await fetch(`http://localhost:8800/server/patient/${PatientToDelete}`, {
                 method: 'DELETE',
             });
 
             if (response.ok) {
-                setUsers(users.filter(user => user.id !== userToDelete));
+                setPatient(patient.filter(patient => patient.id !== PatientToDelete));
                 setConfirmDeleteOpen(false);
-                setUserToDelete(null);
+                setPatientToDelete(null);
             } else {
-                console.error("Failed to delete user:", response.statusText);
+                console.error("Failed to delete patient:", response.statusText);
             }
         } catch (error) {
-            console.error("Error deleting user:", error);
+            console.error("Error deleting patient:", error);
         }
     };
 
@@ -126,53 +128,81 @@ const PatientManagement = ({ toggleSidebar, sidebarOpen }) => {
                     <div className="ml-64 p-4 w-full">
 
                         <div className="bg-white p-6 rounded-lg shadow-md mb-6">
-                            <h2 className="text-xl font-semibold mb-4">{editingUser ? 'Edit User' : 'Add New User'}</h2>
-                            <form onSubmit={editingUser ? handleUpdateUser : handleAddUser} className="flex flex-col">
+                            <h2 className="text-xl font-semibold mb-4">{editingPatient ? 'Edit Patient' : 'Add New Patient'}</h2>
+                            <form onSubmit={editingPatient ? handleUpdatePatient : handleAddPatient} className="flex flex-col">
                                 <input
                                     type="text"
-                                    name="username"
-                                    placeholder="Username"
-                                    value={editingUser ? editingUser.username : newUser.username}
+                                    name="FirstName"
+                                    placeholder="First name"
+                                    value={editingPatient ? editingPatient.FirstName : newPatient.FirstName}
+                                    onChange={handleInputChange}
+                                    className="mb-4 p-2 border border-gray-300 rounded"
+                                    required
+                                />
+                                <input
+                                    type="text"
+                                    name="LastName"
+                                    placeholder="Last name"
+                                    value={editingPatient ? editingPatient.LastName : newPatient.LastName}
+                                    onChange={handleInputChange}
+                                    className="mb-4 p-2 border border-gray-300 rounded"
+                                    required
+                                />
+                                <input
+                                    type="date"
+                                    name="DateOfBirth"
+                                    placeholder="Date of Birth"
+                                    value={editingPatient ? editingPatient.DateOfBirth : newPatient.DateOfBirth}
+                                    onChange={handleInputChange}
+                                    className="mb-4 p-2 border border-gray-300 rounded"
+                                    required
+                                />
+                                <select
+                                    name="Gender"
+                                    value={editingPatient ? editingPatient.Gender : newPatient.Gender}
+                                    onChange={handleInputChange}
+                                    className="mb-4 p-2 border border-gray-300 rounded"
+                                    required
+                                >
+                                    <option value="">Select Gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                </select>
+                                <input
+                                    type="text"
+                                    name="Address"
+                                    placeholder="Address"
+                                    value={editingPatient ? editingPatient.Address : newPatient.Address}
+                                    onChange={handleInputChange}
+                                    className="mb-4 p-2 border border-gray-300 rounded"
+                                    required
+                                />
+                                <input
+                                    type="text"
+                                    name="PhoneNumber"
+                                    placeholder="Phone Number"
+                                    value={editingPatient ? editingPatient.PhoneNumber : newPatient.PhoneNumber}
                                     onChange={handleInputChange}
                                     className="mb-4 p-2 border border-gray-300 rounded"
                                     required
                                 />
                                 <input
                                     type="email"
-                                    name="email"
+                                    name="Email"
                                     placeholder="Email"
-                                    value={editingUser ? editingUser.email : newUser.email}
+                                    value={editingPatient ? editingPatient.Email : newPatient.Email}
                                     onChange={handleInputChange}
                                     className="mb-4 p-2 border border-gray-300 rounded"
                                     required
                                 />
-                                <input
-                                    type="password"
-                                    name="password"
-                                    placeholder="Password"
-                                    value={editingUser ? editingUser.password : newUser.password}
-                                    onChange={handleInputChange}
-                                    className="mb-4 p-2 border border-gray-300 rounded"
-                                    required
-                                />
-                                <select
-                                    name="role"
-                                    value={editingUser ? editingUser.role : newUser.role}
-                                    onChange={handleInputChange}
-                                    className="mb-4 p-2 border border-gray-300 rounded"
-                                    required
-                                >
-                                    <option value="">Select Role</option>
-                                    <option value="Admin">Admin</option>
-                                    <option value="Staff">Staff</option>
-                                </select>
+
                                 <button type="submit" className="bg-[#663399] text-white px-4 py-2 rounded hover:bg-green-500">
-                                    {editingUser ? 'Update User' : 'Add User'}
+                                    {editingPatient ? 'Update Patient' : 'Add Patient'}
                                 </button>
-                                {editingUser && (
+                                {editingPatient && (
                                     <button
                                         type="button"
-                                        onClick={() => setEditingUser(null)}
+                                        onClick={() => setEditingPatient(null)}
                                         className="mt-2 bg-gray-500 text-white px-4 py-2 rounded"
                                     >
                                         Cancel
@@ -182,32 +212,37 @@ const PatientManagement = ({ toggleSidebar, sidebarOpen }) => {
                         </div>
 
                         <div className="bg-white p-6 rounded-lg shadow-md">
-                            <h2 className="text-xl font-semibold mb-4">User  List</h2>
+                            <h2 className="text-xl font-semibold mb-4">Patient List</h2>
                             <div className='overflow-scroll sm:overflow-hidden'>
                                 <table className="min-w-full bg-white border border-gray-300">
                                     <thead>
                                         <tr className="bg-gray-200">
-                                            <th className="py-2 px-4 text-left">Username</th>
+                                            <th className="py-2 px-4 text-left">First Name</th>
+                                            <th className="py-2 px-4 text-left">Last name</th>
+                                            <th className="py-2 px-4 text-left">Date of Birth</th>
+                                            <th className="py-2 px-4 text-left">Gender</th>
+                                            <th className="py-2 px-4 text-left">Address</th>
                                             <th className="py-2 px-4 text-left">Email</th>
-                                            <th className="py-2 px-4 text-left">Role</th>
-                                            <th className="py-2 px-4 text-left">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {users.map(user => (
-                                            <tr key={user.id} className="border-b">
-                                                <td className="py-2 px-4">{user.username}</td>
-                                                <td className="py-2 px-4">{user.email}</td>
-                                                <td className="py-2 px-4">{user.role}</td>
+                                        {patient.map(patient => (
+                                            <tr key={patient.id} className="border-b">
+                                                <td className="py-2 px-4">{patient.FirstName}</td>
+                                                <td className="py-2 px-4">{patient.LastName}</td>
+                                                <td className="py-2 px-4">{patient.DateOfBirth}</td>
+                                                <td className="py-2 px-4">{patient.Gender}</td>
+                                                <td className="py-2 px-4">{patient.Address}</td>
+                                                <td className="py-2 px-4">{patient.Email}</td>
                                                 <td className="py-2 px-4">
                                                     <button
-                                                        onClick={() => handleEditUser(user)}
+                                                        onClick={() => handleEditPatient(patient)}
                                                         className="text-blue-500 hover:underline mr-2"
                                                     >
                                                         Edit
                                                     </button>
                                                     <button
-                                                        onClick={() => handleDeleteUser(user.id)}
+                                                        onClick={() => handleDeletePatient(patient.id)}
                                                         className="text-red-500 hover:underline"
                                                     >
                                                         Delete

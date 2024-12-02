@@ -5,9 +5,9 @@ import bodyParser from 'body-parser';
 import db from "./models/index.js"; // Ensure this points to your models/index.js
 import userRoutes from "./routes/users.js";
 import substancesRoutes from "./routes/substances.js";
-import incidentRoutes from "./routes/incident.js";
-import incident_substancesRoutes from "./routes/incident_substances.js";
-import facilitiesRoutes from "./routes/facilities.js";
+// import incidentRoutes from "./routes/TreatmentPrograms.js";
+import incident_substancesRoutes from "./routes/patient.js";
+import patientsRoutes from "./routes/patient.js";
 import authRoutes from "./routes/auth.js";
 import overviewRouter from "./routes/overview.js"; // Import the overview routes
 
@@ -38,11 +38,44 @@ db.sequelize
 // Routes
 app.use("/server/users", userRoutes);
 app.use("/server/substances", substancesRoutes);
-app.use("/server/incident", incidentRoutes);
+// app.use("/server/incident", incidentRoutes);
 app.use("/server/incident_substances", incident_substancesRoutes);
-app.use("/server/facilities", facilitiesRoutes);
+app.get("/server/patient", patientsRoutes);
 app.use("/server/auth", authRoutes);
 app.use("/server/overview", overviewRouter); // Add the overview routes
+
+let patients = []; // In-memory storage for patients
+
+// Route to get all patients
+app.get('/server/patient', (req, res) => {
+    res.json(patients);
+});
+
+// Route to add a new patient
+app.post('/server/patient', (req, res) => {
+    const newPatient = { id: patients.length + 1, ...req.body }; // Add an ID
+    patients.push(newPatient);
+    res.status(201).json(newPatient); // Respond with the created patient
+});
+
+// Route to update a patient
+app.put('/server/patient/:id', (req, res) => {
+    const { id } = req.params;
+    const index = patients.findIndex(p => p.id === parseInt(id));
+    if (index !== -1) {
+        patients[index] = { ...patients[index], ...req.body };
+        res.json(patients[index]);
+    } else {
+        res.status(404).send('Patient not found');
+    }
+});
+
+// Route to delete a patient
+app.delete('/server/patient/:id', (req, res) => {
+    const { id } = req.params;
+    patients = patients.filter(p => p.id !== parseInt(id));
+    res.status(204).send(); // No content
+});
 
 // Start the server
 app.listen(PORT, () => {

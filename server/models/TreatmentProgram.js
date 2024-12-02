@@ -19,16 +19,8 @@ const TreatmentProgram = (sequelize) => {
             type: DataTypes.INTEGER, // Duration in days
             allowNull: false,
         },
-        CreatedAt: {
-            type: DataTypes.DATE,
-            defaultValue: DataTypes.NOW,
-        },
-        UpdatedAt: {
-            type: DataTypes.DATE,
-            defaultValue: DataTypes.NOW,
-        },
     }, {
-        timestamps: false, // Disable automatic timestamps if you handle them manually
+        timestamps: true, // Disable automatic timestamps if you handle them manually
     });
 };
 
