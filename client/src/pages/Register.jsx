@@ -86,7 +86,7 @@ const Register = () => {
                     <Link to="/">
                         <Button
                             variant="contained"
-                            color="secondary"
+                            color="primary"
                             sx={{ '&:hover': { backgroundColor: 'violet' } }}
                         >
                             Login
