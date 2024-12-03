@@ -84,7 +84,7 @@ const Register = () => {
                     </p>
                     <span>Do you have an account?</span>
                     <Link to="/">
-                    <Button
+                        <Button
                             variant="contained"
                             color="secondary"
                             sx={{ '&:hover': { backgroundColor: 'violet' } }}
