@@ -6,16 +6,17 @@ import { Dialog, DialogActions, DialogContent, DialogTitle, Button } from '@mui/
 
 const PatientManagement = ({ toggleSidebar, sidebarOpen }) => {
     const [patient, setPatient] = useState([]);
-    const [newPatient, setNewPatient] = useState({ FirstName: '', LastName: '', DateOfBirth: '', Gender: '', Address: '', PhoneNumber: '', Email: '' });
+    const [newPatient, setNewPatient] = useState({ firstName: '', lastName: '', dateOfBirth: '', gender: '', address: '', phoneNumber: '', email: '' });
     const [editingPatient, setEditingPatient] = useState(null);
     const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
     const [PatientToDelete, setPatientToDelete] = useState(null);
 
     const getPatient = async () => {
         try {
-            const res = await fetch("http://localhost:8800/server/patient", {
+            const res = await fetch("http://localhost:8800/patients/allPatients", {
                 method: "GET",
             });
+
             if (res.ok) {
                 const data = await res.json();
                 console.log(data)
@@ -45,7 +46,7 @@ const PatientManagement = ({ toggleSidebar, sidebarOpen }) => {
         e.preventDefault();
         if (Object.values(newPatient).every((field) => field.trim())) {
             try {
-                const response = await fetch("http://localhost:8800/server/patient", {
+                const response = await fetch("http://localhost:9091/patients/add", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -56,7 +57,7 @@ const PatientManagement = ({ toggleSidebar, sidebarOpen }) => {
                 if (response.ok) {
                     const createdPatient = await response.json();
                     setPatient([...patient, createdPatient]);
-                    setNewPatient({ FirstName: "", LastName: "", DateOfBirth: "", Gender: "", Address: "", PhoneNumber: "", Email: "" });
+                    setNewPatient({ firstName: "", lastName: "", dateOfBirth: "", gender: "", address: "", phoneNumber: "", email: "" });
                 } else {
                     console.error("Failed to add patient:", response.statusText);
                 }
@@ -67,7 +68,6 @@ const PatientManagement = ({ toggleSidebar, sidebarOpen }) => {
             console.error("Please fill in all fields.");
         }
     };
-
 
     const handleEditPatient = (patient) => {
         setEditingPatient(patient);
@@ -86,7 +86,7 @@ const PatientManagement = ({ toggleSidebar, sidebarOpen }) => {
                 });
 
                 if (response.ok) {
-                    setPatient(patient.map(patient => (patient.id === editingPatient.id ? editingPatient : patient)));
+                    setPatient(patient.map(patient => (patient.patientId === editingPatient.id ? editingPatient : patient)));
                     setEditingPatient(null);
                 } else {
                     console.error("Failed to update user:", response.statusText);
@@ -109,7 +109,7 @@ const PatientManagement = ({ toggleSidebar, sidebarOpen }) => {
             });
 
             if (response.ok) {
-                setPatient(patient.filter(patient => patient.id !== PatientToDelete));
+                setPatient(patient.filter(patient => patient.patientId !== PatientToDelete));
                 setConfirmDeleteOpen(false);
                 setPatientToDelete(null);
             } else {
@@ -132,34 +132,34 @@ const PatientManagement = ({ toggleSidebar, sidebarOpen }) => {
                             <form onSubmit={editingPatient ? handleUpdatePatient : handleAddPatient} className="flex flex-col">
                                 <input
                                     type="text"
-                                    name="FirstName"
+                                    name="firstName"
                                     placeholder="First name"
-                                    value={editingPatient ? editingPatient.FirstName : newPatient.FirstName}
+                                    value={editingPatient ? editingPatient.FirstName : newPatient.firstName}
                                     onChange={handleInputChange}
                                     className="mb-4 p-2 border border-gray-300 rounded"
                                     required
                                 />
                                 <input
                                     type="text"
-                                    name="LastName"
+                                    name="lastName"
                                     placeholder="Last name"
-                                    value={editingPatient ? editingPatient.LastName : newPatient.LastName}
+                                    value={editingPatient ? editingPatient.lastName : newPatient.lastName}
                                     onChange={handleInputChange}
                                     className="mb-4 p-2 border border-gray-300 rounded"
                                     required
                                 />
                                 <input
                                     type="date"
-                                    name="DateOfBirth"
+                                    name="dateOfBirth"
                                     placeholder="Date of Birth"
-                                    value={editingPatient ? editingPatient.DateOfBirth : newPatient.DateOfBirth}
+                                    value={editingPatient ? editingPatient.dateOfBirth : newPatient.dateOfBirth}
                                     onChange={handleInputChange}
                                     className="mb-4 p-2 border border-gray-300 rounded"
                                     required
                                 />
                                 <select
-                                    name="Gender"
-                                    value={editingPatient ? editingPatient.Gender : newPatient.Gender}
+                                    name="gender"
+                                    value={editingPatient ? editingPatient.gender : newPatient.gender}
                                     onChange={handleInputChange}
                                     className="mb-4 p-2 border border-gray-300 rounded"
                                     required
@@ -170,27 +170,28 @@ const PatientManagement = ({ toggleSidebar, sidebarOpen }) => {
                                 </select>
                                 <input
                                     type="text"
-                                    name="Address"
+                                    name="address"
                                     placeholder="Address"
-                                    value={editingPatient ? editingPatient.Address : newPatient.Address}
+                                    value={editingPatient ? editingPatient.address : newPatient.address}
                                     onChange={handleInputChange}
                                     className="mb-4 p-2 border border-gray-300 rounded"
                                     required
                                 />
                                 <input
                                     type="text"
-                                    name="PhoneNumber"
+                                    name="phoneNumber"
                                     placeholder="Phone Number"
-                                    value={editingPatient ? editingPatient.PhoneNumber : newPatient.PhoneNumber}
+                                    value={editingPatient ? editingPatient.phoneNumber : newPatient.phoneNumber}
                                     onChange={handleInputChange}
                                     className="mb-4 p-2 border border-gray-300 rounded"
                                     required
+
                                 />
                                 <input
                                     type="email"
-                                    name="Email"
+                                    name="email"
                                     placeholder="Email"
-                                    value={editingPatient ? editingPatient.Email : newPatient.Email}
+                                    value={editingPatient ? editingPatient.email : newPatient.email}
                                     onChange={handleInputChange}
                                     className="mb-4 p-2 border border-gray-300 rounded"
                                     required
@@ -223,17 +224,18 @@ const PatientManagement = ({ toggleSidebar, sidebarOpen }) => {
                                             <th className="py-2 px-4 text-left">Gender</th>
                                             <th className="py-2 px-4 text-left">Address</th>
                                             <th className="py-2 px-4 text-left">Email</th>
+                                            <th className="py-2 px-4 text-left">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {patient.map(patient => (
-                                            <tr key={patient.id} className="border-b">
-                                                <td className="py-2 px-4">{patient.FirstName}</td>
-                                                <td className="py-2 px-4">{patient.LastName}</td>
-                                                <td className="py-2 px-4">{patient.DateOfBirth}</td>
-                                                <td className="py-2 px-4">{patient.Gender}</td>
-                                                <td className="py-2 px-4">{patient.Address}</td>
-                                                <td className="py-2 px-4">{patient.Email}</td>
+                                            <tr key={patient.patientId} className="border-b">
+                                                <td className="py-2 px-4">{patient.firstName}</td>
+                                                <td className="py-2 px-4">{patient.lastName}</td>
+                                                <td className="py-2 px-4">{patient.dateOfBirth}</td>
+                                                <td className="py-2 px-4">{patient.gender}</td>
+                                                <td className="py-2 px-4">{patient.address}</td>
+                                                <td className="py-2 px-4">{patient.email}</td>
                                                 <td className="py-2 px-4">
                                                     <button
                                                         onClick={() => handleEditPatient(patient)}
@@ -242,7 +244,7 @@ const PatientManagement = ({ toggleSidebar, sidebarOpen }) => {
                                                         Edit
                                                     </button>
                                                     <button
-                                                        onClick={() => handleDeletePatient(patient.id)}
+                                                        onClick={() => handleDeletePatient(patient.patientId)}
                                                         className="text-red-500 hover:underline"
                                                     >
                                                         Delete

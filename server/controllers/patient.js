@@ -1,20 +1,22 @@
-// /controllers/Patient.js
-import Patient from "../models/Patient.js"; // Assuming the model is correctly imported
+// controllers/patient.js
+import express from 'express';
+import patientService from '../services/patient.js';
 
-export const getPatient = async (req, res) => {
-    try {
-        const patients = await Patient.findAll(); // Fetch all patients
-        res.status(200).json(patients);
-    } catch (error) {
-        res.status(500).json({ message: "Error retrieving patients", error });
-    }
-};
+const router = express.Router();
 
-export const createPatient = async (req, res) => {
-    try {
-        const newPatient = await Patient.create(req.body); // Add new patient
-        res.status(201).json(newPatient);
-    } catch (error) {
-        res.status(500).json({ message: "Error creating patient", error });
+router.post('/add', async (req, res) => {
+    const patientData = req.body;
+    const patient = await patientService.savePatient(patientData);
+
+    if (!patient) {
+        return res.status(200).json({ code: "200", message: "Email already in use" });
     }
-};
+    return res.status(200).json({ code: "200", message: "Patient successfully saved" });
+});
+
+router.get('/allPatients', async (req, res) => {
+    const patients = await patientService.getAllPatient();
+    return res.status(200).json(patients);
+});
+
+export default router;
