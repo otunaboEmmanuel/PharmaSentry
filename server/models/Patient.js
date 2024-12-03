@@ -35,6 +35,11 @@ const Patient = (sequelize) => {
             type: DataTypes.STRING,
             allowNull: true,
         },
+        Status: {
+            type: DataTypes.ENUM('undergoing treatment', 'completed treatment'), // Restrict to two states
+            allowNull: true, // Allow null values
+            defaultValue: 'undergoing treatment' // Default value
+        },
     }, {
         timestamps: true,
     });
