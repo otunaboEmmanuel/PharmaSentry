@@ -39,6 +39,7 @@ app.use("/server/auth", authRoutes);
 app.use("/server/overview", overviewRouter); // Add the overview routes
 app.use("/patients", patientController); // Add patient routes
 
+
 // Start the server
 app.listen(PORT, () => {
     console.log(`API working on port ${PORT}!`);

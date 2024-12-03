@@ -1,6 +1,6 @@
 // controllers/patient.js
 import express from 'express';
-import patientService from '../services/patient.js';
+import patientService from '../services/PatientService.js';
 
 const router = express.Router();
 
@@ -15,8 +15,12 @@ router.post('/add', async (req, res) => {
 });
 
 router.get('/allPatients', async (req, res) => {
-    const patients = await patientService.getAllPatient();
-    return res.status(200).json(patients);
+    try {
+        const patients = await patientService.getAllPatients();
+        return res.status(200).json(patients);
+    } catch (error) {
+        return res.status(500).json({ message: "Error fetching patients", error });
+    }
 });
 
 export default router;
