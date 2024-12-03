@@ -18,6 +18,10 @@ const TreatmentSession = (sequelize) => {
         SessionDate: {
             type: DataTypes.DATE,
             allowNull: false,
+            get() {
+                const rawValue = this.getDataValue('SessionDate');
+                return rawValue ? new Date(rawValue).toLocaleString() : null;
+            },
         },
         Notes: {
             type: DataTypes.TEXT,
@@ -26,10 +30,18 @@ const TreatmentSession = (sequelize) => {
         CreatedAt: {
             type: DataTypes.DATE,
             defaultValue: DataTypes.NOW,
+            get() {
+                const rawValue = this.getDataValue('CreatedAt');
+                return rawValue ? new Date(rawValue).toLocaleString() : null;
+            },
         },
         UpdatedAt: {
             type: DataTypes.DATE,
             defaultValue: DataTypes.NOW,
+            get() {
+                const rawValue = this.getDataValue('UpdatedAt');
+                return rawValue ? new Date(rawValue).toLocaleString() : null;
+            },
         },
     }, {
         timestamps: false, // Disable automatic timestamps if you handle them manually

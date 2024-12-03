@@ -11,6 +11,7 @@ import Resources from './pages/Resources';
 import Settings from "./pages/Settings";
 import Profile from "./pages/Profile"
 import PatientManagement from './pages/PatientManagement';
+import TreatmentSessions from './pages/TreatmentSessions';
 
 const App = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false); // State for sidebar visibility
@@ -28,6 +29,7 @@ const App = () => {
           <Route path="/dashboard" element={<Dashboard sidebarOpen={sidebarOpen} toggleSidebar={toggleSidebar} />} />
           <Route path="/reports" element={<Reports sidebarOpen={sidebarOpen} toggleSidebar={toggleSidebar} />} />
           <Route path="/settings" element={<Settings sidebarOpen={sidebarOpen} toggleSidebar={toggleSidebar} />} />
+          <Route path="/treatments" element={<TreatmentSessions sidebarOpen={sidebarOpen} toggleSidebar={toggleSidebar} />} />
           <Route path="/profile" element={<Profile sidebarOpen={sidebarOpen} toggleSidebar={toggleSidebar} />} />
           <Route path="/notifications" element={<Notifications sidebarOpen={sidebarOpen} toggleSidebar={toggleSidebar} />} />
           <Route path="/resources" element={<Resources sidebarOpen={sidebarOpen} toggleSidebar={toggleSidebar} />} />

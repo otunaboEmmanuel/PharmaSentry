@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { AuthProvider } from '../components/Auth';
 import Sidebar from '../components/Sidebar';
-// import TopNav from '../components/topnav/TopNav';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button } from '@mui/material';
 
 const PatientManagement = ({ toggleSidebar, sidebarOpen }) => {
-    const [patient, setPatient] = useState([]);
+    const [patients, setPatients] = useState([]);
     const [newPatient, setNewPatient] = useState({ FirstName: '', LastName: '', DateOfBirth: '', Gender: '', Address: '', PhoneNumber: '', Email: '' });
     const [editingPatient, setEditingPatient] = useState(null);
     const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
-    const [PatientToDelete, setPatientToDelete] = useState(null);
+    const [patientToDelete, setPatientToDelete] = useState(null);
 
-    const getPatient = async () => {
+    const getPatients = async () => {
         try {
             const res = await fetch("http://localhost:8800/patients/allPatients", {
                 method: "GET",
@@ -19,7 +18,7 @@ const PatientManagement = ({ toggleSidebar, sidebarOpen }) => {
 
             if (res.ok) {
                 const data = await res.json();
-                setPatient(data);
+                setPatients(data);
             } else {
                 console.error("Failed to fetch patients:", res.statusText);
             }
@@ -29,7 +28,7 @@ const PatientManagement = ({ toggleSidebar, sidebarOpen }) => {
     };
 
     useEffect(() => {
-        getPatient();
+        getPatients();
     }, []);
 
     const handleInputChange = (e) => {
@@ -45,7 +44,7 @@ const PatientManagement = ({ toggleSidebar, sidebarOpen }) => {
         e.preventDefault();
         if (Object.values(newPatient).every((field) => field.trim())) {
             try {
-                const response = await fetch("http://localhost:8800/patients/add", { // Corrected URL
+                const response = await fetch("http://localhost:8800/patients/add", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -55,7 +54,7 @@ const PatientManagement = ({ toggleSidebar, sidebarOpen }) => {
 
                 if (response.ok) {
                     const createdPatient = await response.json();
-                    setPatient([...patient, createdPatient]);
+                    setPatients([...patients, createdPatient]);
                     setNewPatient({ FirstName: "", LastName: "", DateOfBirth: "", Gender: "", Address: "", PhoneNumber: "", Email: "" });
                 } else {
                     console.error("Failed to add patient:", response.statusText);
@@ -76,7 +75,7 @@ const PatientManagement = ({ toggleSidebar, sidebarOpen }) => {
         e.preventDefault();
         if (editingPatient) {
             try {
-                const response = await fetch(`http://localhost:8800/server/patient${editingPatient.id}`, {
+                const response = await fetch(`http://localhost:8800/patients/update/${editingPatient.PatientID}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -85,13 +84,13 @@ const PatientManagement = ({ toggleSidebar, sidebarOpen }) => {
                 });
 
                 if (response.ok) {
-                    setPatient(patient.map(patient => (patient.patientId === editingPatient.id ? editingPatient : patient)));
+                    setPatients(patients.map(patient => (patient.PatientID === editingPatient.PatientID ? editingPatient : patient)));
                     setEditingPatient(null);
                 } else {
-                    console.error("Failed to update user:", response.statusText);
+                    console.error("Failed to update patient:", response.statusText);
                 }
             } catch (error) {
-                console.error("Error updating user:", error);
+                console.error("Error updating patient:", error);
             }
         }
     };
@@ -103,21 +102,21 @@ const PatientManagement = ({ toggleSidebar, sidebarOpen }) => {
 
     const confirmDelete = async () => {
         try {
-            const response = await fetch(`http://localhost:8800/server/patient/${PatientToDelete}`, {
+            const response = await fetch(`http://localhost:8800/patients/delete/${patientToDelete}`, {
                 method: 'DELETE',
             });
 
             if (response.ok) {
-                setPatient(patient.filter(patient => patient.patientId !== PatientToDelete));
-                setConfirmDeleteOpen(false);
-                setPatientToDelete(null);
-            } else {
-                console.error("Failed to delete patient:", response.statusText);
+                setPatients(patients.filter(patient => patient.PatientID !== patientToDelete));
+                    setConfirmDeleteOpen(false);
+                    setPatientToDelete(null);
+                } else {
+                    console.error("Failed to delete patient:", response.statusText);
+                }
+            } catch (error) {
+                console.error("Error deleting patient:", error);
             }
-        } catch (error) {
-            console.error("Error deleting patient:", error);
-        }
-    };
+        };
 
     return (
         <AuthProvider>
@@ -125,7 +124,6 @@ const PatientManagement = ({ toggleSidebar, sidebarOpen }) => {
                 <div className="flex flex-row">
                     <Sidebar />
                     <div className="ml-64 p-4 w-full">
-
                         <div className="bg-white p-6 rounded-lg shadow-md mb-6">
                             <h2 className="text-xl font-semibold mb-4">{editingPatient ? 'Edit Patient' : 'Add New Patient'}</h2>
                             <form onSubmit={editingPatient ? handleUpdatePatient : handleAddPatient} className="flex flex-col">
@@ -184,7 +182,6 @@ const PatientManagement = ({ toggleSidebar, sidebarOpen }) => {
                                     onChange={handleInputChange}
                                     className="mb-4 p-2 border border-gray-300 rounded"
                                     required
-
                                 />
                                 <input
                                     type="email"
@@ -195,7 +192,6 @@ const PatientManagement = ({ toggleSidebar, sidebarOpen }) => {
                                     className="mb-4 p-2 border border-gray-300 rounded"
                                     required
                                 />
-
                                 <button type="submit" className="bg-[#663399] text-white px-4 py-2 rounded hover:bg-green-500">
                                     {editingPatient ? 'Update Patient' : 'Add Patient'}
                                 </button>
@@ -227,7 +223,7 @@ const PatientManagement = ({ toggleSidebar, sidebarOpen }) => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {patient.map(patient => (
+                                        {patients.map(patient => (
                                             <tr key={patient.PatientID} className="border-b">
                                                 <td className="py-2 px-4">{patient.FirstName}</td>
                                                 <td className="py-2 px-4">{patient.LastName}</td>
@@ -243,7 +239,7 @@ const PatientManagement = ({ toggleSidebar, sidebarOpen }) => {
                                                         Edit
                                                     </button>
                                                     <button
-                                                        onClick={() => handleDeletePatient(patient.patientId)}
+                                                        onClick={() => handleDeletePatient(patient.PatientID)}
                                                         className="text-red-500 hover:underline"
                                                     >
                                                         Delete
@@ -259,7 +255,7 @@ const PatientManagement = ({ toggleSidebar, sidebarOpen }) => {
                         <Dialog open={confirmDeleteOpen} onClose={() => setConfirmDeleteOpen(false)}>
                             <DialogTitle>Confirm Delete</DialogTitle>
                             <DialogContent>
-                                <p>Are you sure you want to delete this user?</p>
+                                <p>Are you sure you want to delete this patient?</p>
                             </DialogContent>
                             <DialogActions>
                                 <Button onClick={() => setConfirmDeleteOpen(false)} color="primary">
@@ -273,7 +269,7 @@ const PatientManagement = ({ toggleSidebar, sidebarOpen }) => {
                     </div>
                 </div>
             </div>
-        </AuthProvider >
+        </AuthProvider>
     );
 };
 

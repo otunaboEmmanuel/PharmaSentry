@@ -9,6 +9,7 @@ import substancesRoutes from "./routes/substances.js";
 import patientController from './controllers/patient.js';
 import authRoutes from "./routes/auth.js";
 import overviewRouter from "./routes/overview.js"; // Import the overview routes
+import treatmentController from "./controllers/treatmentSessions.js"; // Import the treatment session routes
 
 const app = express();
 const PORT = process.env.PORT || 8800; // Set the port
@@ -38,7 +39,7 @@ app.use("/server/substances", substancesRoutes);
 app.use("/server/auth", authRoutes);
 app.use("/server/overview", overviewRouter); // Add the overview routes
 app.use("/patients", patientController); // Add patient routes
-
+app.use("/treatmentSessions", treatmentController); // Add treatment session routes
 
 // Start the server
 app.listen(PORT, () => {

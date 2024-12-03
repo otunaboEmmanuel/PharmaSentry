@@ -27,7 +27,24 @@ const patientService = {
         } catch (error) {
             throw error; // Handle any errors
         }
-    }
+    },
+    updatePatient: async (id, updatedData) => {
+        const patient = await db.Patient.findByPk(id);
+        if (!patient) return null;
+
+        // Update patient fields
+        await patient.update(updatedData);
+        return patient;
+    },
+
+    deletePatient: async (id) => {
+        const patient = await db.Patient.findByPk(id);
+        if (!patient) return null;
+
+        // Delete the patient
+        await patient.destroy();
+        return patient;
+    },
 };
 
 export default patientService;

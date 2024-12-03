@@ -19,8 +19,24 @@ const TreatmentProgram = (sequelize) => {
             type: DataTypes.INTEGER, // Duration in days
             allowNull: false,
         },
+        CreatedAt: {
+            type: DataTypes.DATE,
+            defaultValue: DataTypes.NOW,
+            get() {
+                const rawValue = this.getDataValue('CreatedAt');
+                return rawValue ? new Date(rawValue).toLocaleString() : null;
+            },
+        },
+        UpdatedAt: {
+            type: DataTypes.DATE,
+            defaultValue: DataTypes.NOW,
+            get() {
+                const rawValue = this.getDataValue('UpdatedAt');
+                return rawValue ? new Date(rawValue).toLocaleString() : null;
+            },
+        },
     }, {
-        timestamps: true, // Disable automatic timestamps if you handle them manually
+        timestamps: false, // Disable automatic timestamps if you handle them manually
     });
 };
 
