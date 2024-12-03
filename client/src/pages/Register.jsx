@@ -78,9 +78,7 @@ const Register = () => {
                 <div className="register-right flex-2">
                     <h1 className="text-8xl font-bold">Pharm Sentry.</h1>
                     <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero cum,
-                        alias totam numquam ipsa exercitationem dignissimos, error nam,
-                        consequatur.
+                    Your trusted platform for intelligent drug abuse monitoring and management. Pharm Sentry combines cutting edge technology with a user-friendly interface to ensure seamless oversight and reporting.
                     </p>
                     <span>Do you have an account?</span>
                     <Link to="/">
