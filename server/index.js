@@ -25,7 +25,7 @@ app.use(bodyParser.json());
 
 // Sync database and create tables without dropping existing ones
 db.sequelize
-    .sync({ alter: true }) // Use { alter: true } to update the schema without dropping tables
+    .sync({ alter: false, force: false }) // Use { alter: true } to update the schema without dropping tables
     .then(() => {
         console.log("Database & tables created!");
     })
