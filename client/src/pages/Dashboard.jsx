@@ -183,7 +183,7 @@ const Dashboard = () => {
                         <tr key={index} className="hover:bg-gray-100">
                           <td className="py-2 px-4 border-b text-left">{`${patient.FirstName} ${patient.LastName}`}</td>
                           <td className="py-2 px-4 border-b text-left">{calculateAge(patient.DateOfBirth)}</td>
-                          <td className="py-2 px-4 border-b text-left">{ }</td>
+                          <td className="py-2 px-4 border-b text-left">{}</td>
                           <td className="py-2 px-4 border-b text-left">{patient.Status}</td>
                           <td className="py-2 px-4 border-b text-left">
                             <button
