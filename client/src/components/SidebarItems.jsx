@@ -6,13 +6,11 @@ import { Settings } from '@mui/icons-material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
-import SendIcon from '@mui/icons-material/Send';
 import HealingIcon from '@mui/icons-material/Healing';
 
 const SidebarItems = ({ toggleSidebar }) => { // Accept toggleSidebar as a prop
     const navItems = [
         { name: "Dashboard", icon: <HomeIcon />, link: "/dashboard" },
-        { name: "Reports", icon: <SendIcon />, link: "/reports" },
         { name: "Treatment Management", icon: <HealingIcon />, link: "/treatments" },
         { name: "Notifications", icon: <NotificationsActiveIcon />, link: "/notifications" },
         { name: "Patients Management", icon: <ManageAccountsIcon/>, link: "/patient" },
