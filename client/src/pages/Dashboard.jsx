@@ -5,9 +5,7 @@ const Dashboard = () => {
   const [totalPatients, setTotalPatients] = useState(0);
   const [patients, setPatients] = useState([]); // State to hold patient data
   const [overdoseIncidents, setOverdoseIncidents] = useState([]);
-  const [emergencyVisits, setEmergencyVisits] = useState(0);
   const [treatmentPrograms, setTreatmentPrograms] = useState([]);
-  const [communityResources, setCommunityResources] = useState(0);
   const [recentActivities, setRecentActivities] = useState([]); // Assuming you have a state for recent activities
 
   useEffect(() => {
@@ -15,40 +13,30 @@ const Dashboard = () => {
       try {
         const [
           patientsResponse,
-          overdoseResponse,
-          emergencyResponse,
           treatmentResponse,
-          communityResponse,
+          overdoseResponse,
         ] = await Promise.all([
           fetch('http://localhost:8800/patients/allpatients'), // Updated endpoint
-          fetch('http://localhost:8800/server/overview/overdose-incidents'),
-          fetch('http://localhost:8800/server/overview/emergency-visits'),
           fetch('http://localhost:8800/treatmentPrograms'), // Updated endpoint
-          fetch('http://localhost:8800/server/overview/community-resources'),
+          fetch('http://localhost:8800/patients/allpatients')
         ]);
 
         if (
           !patientsResponse.ok ||
-          !overdoseResponse.ok ||
-          !emergencyResponse.ok ||
           !treatmentResponse.ok ||
-          !communityResponse.ok
+          !overdoseResponse.ok
         ) {
           throw new Error('Network response was not ok');
         }
-
         const patientsData = await patientsResponse.json();
         const overdoseData = await overdoseResponse.json();
-        const emergencyData = await emergencyResponse.json();
         const treatmentData = await treatmentResponse.json();
-        const communityData = await communityResponse.json();
+        
         console.log(treatmentData);
         setTotalPatients(patientsData.length || 0); // Assuming patientsData is an array
         setPatients(patientsData); // Set the patients data
         setOverdoseIncidents(overdoseData.overdoseIncidents || []);
-        setEmergencyVisits(emergencyData.emergencyVisits || 0);
         setTreatmentPrograms(treatmentData);
-        setCommunityResources(communityData.communityResources || 0);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -105,18 +93,6 @@ const Dashboard = () => {
               <div className="bg-white p-6 rounded-lg shadow-md flex-1 min-w-[250px]">
                 <h2 className="text-xl font-semibold">Total Patients</h2>
                 <p className="text-2xl font-bold">{totalPatients}</p>
-              </div>
-
-              {/* Card 2: Emergency Visits */}
-              <div className="bg-white p-6 rounded-lg shadow-md flex-1 min-w-[250px]">
-                <h2 className="text-xl font-semibold">Emergency Visits</h2>
-                <p className="text-2xl font-bold">{emergencyVisits}</p>
-              </div>
-
-              {/* Card 3: Community Resources */}
-              <div className="bg-white p-6 rounded-lg shadow-md flex-1 min-w-[250px]">
-                <h2 className="text-xl font-semibold">Community Resources</h2>
-                <p className="text-2xl font-bold">{communityResources}</p>
               </div>
 
               {/* Card 4: Overdose Incidents */}
