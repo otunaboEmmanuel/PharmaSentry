@@ -3,6 +3,7 @@ import { useState } from "react";
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import React from "react";
+import { TextField, InputAdornment, FormControl, OutlinedInput, IconButton, Button } from "@mui/material";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -64,7 +65,7 @@ const Register = () => {
         <div className="bg-[#c1beff] flex min-h-screen w-full items-center justify-center">
             <div className="card w-1/2 rounded-2xl bg-white flex flex-row max-w-screen-lg">
                 <div className="register-left flex-1">
-                    <h1>Register</h1>
+                    <h1 className="text-2xl font-bold">Register</h1>
                     <form className="flex flex-col gap-8">
                         <input type="text" placeholder="Username" name="username" onChange={handleChange} />
                         <input type="email" placeholder="Email" name="email" onChange={handleChange} />
@@ -75,7 +76,7 @@ const Register = () => {
                     </form>
                 </div>
                 <div className="register-right flex-2">
-                    <h1>Pharm Sentry.</h1>
+                    <h1 className="text-8xl font-bold">Pharm Sentry.</h1>
                     <p>
                         Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero cum,
                         alias totam numquam ipsa exercitationem dignissimos, error nam,
@@ -83,7 +84,13 @@ const Register = () => {
                     </p>
                     <span>Do you have an account?</span>
                     <Link to="/">
-                        <button>Login</button>
+                    <Button
+                            variant="contained"
+                            color="secondary"
+                            sx={{ '&:hover': { backgroundColor: 'violet' } }}
+                        >
+                            Login
+                        </Button>
                     </Link>
                 </div>
             </div>

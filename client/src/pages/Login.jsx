@@ -82,7 +82,7 @@ const Login = () => {
         <div className="bg-[#c1beff] flex min-h-screen w-full items-center justify-center">
             <div className="card w-1/2 rounded-2xl bg-white flex flex-row max-w-screen-lg">
                 <div className="login-left flex w-3/5">
-                    <h1>Pharm Sentry.</h1>
+                    <h1 className="text-8xl font-bold">Pharm Sentry.</h1>
                     <p>
                         Your trusted platform for intelligent drug abuse monitoring and management. Pharm Sentry combines cutting edge technology with a user-friendly interface to ensure seamless oversight and reporting.
                     </p>

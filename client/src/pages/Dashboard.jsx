@@ -102,25 +102,25 @@ const Dashboard = () => {
             <h1 className="text-2xl font-bold">Dashboard</h1>
             <div className="gap-6 mt-4 w-full flex flex-row flex-wrap">
               {/* Card 1: Total Patients */}
-              <div className="bg-white p-6 rounded-lg shadow-md">
+              <div className="bg-white p-6 rounded-lg shadow-md flex-1 min-w-[250px]">
                 <h2 className="text-xl font-semibold">Total Patients</h2>
                 <p className="text-2xl font-bold">{totalPatients}</p>
               </div>
 
               {/* Card 2: Emergency Visits */}
-              <div className="bg-white p-6 rounded-lg shadow-md">
+              <div className="bg-white p-6 rounded-lg shadow-md flex-1 min-w-[250px]">
                 <h2 className="text-xl font-semibold">Emergency Visits</h2>
                 <p className="text-2xl font-bold">{emergencyVisits}</p>
               </div>
 
               {/* Card 3: Community Resources */}
-              <div className="bg-white p-6 rounded-lg shadow-md">
+              <div className="bg-white p-6 rounded-lg shadow-md flex-1 min-w-[250px]">
                 <h2 className="text-xl font-semibold">Community Resources</h2>
                 <p className="text-2xl font-bold">{communityResources}</p>
               </div>
 
               {/* Card 4: Overdose Incidents */}
-              <div className="bg-white p-6 rounded-lg shadow-md">
+              <div className="bg-white p-6 rounded-lg shadow-md flex-1 min-w-[250px]">
                 <h2 className="text-xl font-semibold">Overdose Incidents</h2>
                 <ul className="mt-2">
                   {overdoseIncidents.length > 0 ? (

@@ -10,7 +10,7 @@ import EmergencyVisit from './EmergencyVisit.js';
 import CommunityResource from './CommunityResource.js';
 import Feedback from './Feedback.js';
 
-const sequelize = new Sequelize('pharmasentry', 'root', '', {
+const sequelize = new Sequelize('pharma_sentry', 'root', '8597', {
     host: 'localhost',
     dialect: 'mysql',
 });
