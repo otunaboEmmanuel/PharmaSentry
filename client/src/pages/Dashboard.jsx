@@ -12,13 +12,11 @@ const Dashboard = () => {
     const fetchData = async () => {
       try {
         const [
-          userResponse,
           patientsResponse,
           treatmentResponse,
           overdoseResponse,
           sessionsResponse, // Fetch treatment sessions
         ] = await Promise.all([
-          fetch('http://localhost:8800/server/auth/login'),
           fetch('http://localhost:8800/patients/allpatients'),
           fetch('http://localhost:8800/treatmentPrograms'),
           fetch('http://localhost:8800/overdoseIncidents'),
@@ -26,7 +24,6 @@ const Dashboard = () => {
         ]);
 
         if (
-          !userResponse.ok ||
           !patientsResponse.ok ||
           !treatmentResponse.ok ||
           !overdoseResponse.ok ||
@@ -34,12 +31,10 @@ const Dashboard = () => {
         ) {
           throw new Error('Network response was not ok');
         }
-        const userData = await userResponse.json()
         const patientsData = await patientsResponse.json();
         const overdoseData = await overdoseResponse.json();
         const treatmentData = await treatmentResponse.json();
         const sessionsData = await sessionsResponse.json(); // Get sessions data
-        console.log(userData);
         setTotalPatients(patientsData.length || 0);
         setPatients(patientsData);
         setOverdoseIncidents(overdoseData.length || 0);
