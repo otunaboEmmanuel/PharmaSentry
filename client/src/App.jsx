@@ -5,12 +5,12 @@ import { AuthProvider } from './components/Auth';
 import Dashboard from './pages/Dashboard';
 import Register from './pages/Register';
 import "./styles/main.css"
-import Notifications from './pages/Notifications';
 import Resources from './pages/Resources';
 import Settings from "./pages/Settings";
 import Profile from "./pages/Profile"
 import PatientManagement from './pages/PatientManagement';
 import TreatmentSessions from './pages/TreatmentSessions';
+import Emergencies from './pages/Emergencies';
 
 const App = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false); // State for sidebar visibility
@@ -29,7 +29,7 @@ const App = () => {
           <Route path="/settings" element={<Settings sidebarOpen={sidebarOpen} toggleSidebar={toggleSidebar} />} />
           <Route path="/treatments" element={<TreatmentSessions sidebarOpen={sidebarOpen} toggleSidebar={toggleSidebar} />} />
           <Route path="/profile" element={<Profile sidebarOpen={sidebarOpen} toggleSidebar={toggleSidebar} />} />
-          <Route path="/notifications" element={<Notifications sidebarOpen={sidebarOpen} toggleSidebar={toggleSidebar} />} />
+          <Route path="/drug-management" element={<Emergencies sidebarOpen={sidebarOpen} toggleSidebar={toggleSidebar} />} />
           <Route path="/resources" element={<Resources sidebarOpen={sidebarOpen} toggleSidebar={toggleSidebar} />} />
           <Route path="/patient" element={<PatientManagement sidebarOpen={sidebarOpen} toggleSidebar={toggleSidebar} />} />
         </Routes>

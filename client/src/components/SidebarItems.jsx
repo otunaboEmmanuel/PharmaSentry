@@ -4,7 +4,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { Settings } from '@mui/icons-material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
+import EmergencyIcon from '@mui/icons-material/Emergency';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import HealingIcon from '@mui/icons-material/Healing';
 
@@ -12,7 +12,7 @@ const SidebarItems = ({ toggleSidebar }) => { // Accept toggleSidebar as a prop
     const navItems = [
         { name: "Dashboard", icon: <HomeIcon />, link: "/dashboard" },
         { name: "Treatment Management", icon: <HealingIcon />, link: "/treatments" },
-        { name: "Notifications", icon: <NotificationsActiveIcon />, link: "/notifications" },
+        { name: "Drug Management", icon: <EmergencyIcon/>, link: "/drug-management" },
         { name: "Patients Management", icon: <ManageAccountsIcon/>, link: "/patient" },
     ];
 

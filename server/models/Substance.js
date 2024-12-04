@@ -20,12 +20,9 @@ const Substance = (sequelize) => {
             allowNull: true,
         },
     }, {
-        // Enable timestamps
-        timestamps: true,
-        // Optionally, you can customize the names of the timestamp fields
+        timestamps: true, // This enables createdAt and updatedAt
         createdAt: 'createdAt',
         updatedAt: 'updatedAt',
     });
 };
-
 export default Substance;

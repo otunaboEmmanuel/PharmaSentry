@@ -7,7 +7,7 @@ import TreatmentProgram from './TreatmentProgram.js';
 import TreatmentSession from './TreatmentSession.js';
 import OverdoseIncident from './OverdoseIncident.js';
 
-const sequelize = new Sequelize('pharma_sentry', 'root', '8597', {
+const sequelize = new Sequelize('pharmasentry', 'root', 'otunabo', {
     host: 'localhost',
     dialect: 'mysql',
 });

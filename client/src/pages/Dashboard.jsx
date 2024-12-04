@@ -4,7 +4,7 @@ import Sidebar from '../components/Sidebar';
 const Dashboard = () => {
   const [totalPatients, setTotalPatients] = useState(0);
   const [patients, setPatients] = useState([]);
-  const [overdoseIncidents, setOverdoseIncidents] = useState([]);
+  const [totalOverdoseIncidents, setOverdoseIncidents] = useState([]);
   const [treatmentPrograms, setTreatmentPrograms] = useState([]);
   const [treatmentSessions, setTreatmentSessions] = useState([]); // New state for treatment sessions
 
@@ -12,18 +12,21 @@ const Dashboard = () => {
     const fetchData = async () => {
       try {
         const [
+          userResponse,
           patientsResponse,
           treatmentResponse,
           overdoseResponse,
           sessionsResponse, // Fetch treatment sessions
         ] = await Promise.all([
+          fetch('http://localhost:8800/server/auth/login'),
           fetch('http://localhost:8800/patients/allpatients'),
           fetch('http://localhost:8800/treatmentPrograms'),
-          fetch('http://localhost:8800/patients/allpatients'),
+          fetch('http://localhost:8800/overdoseIncidents'),
           fetch('http://localhost:8800/treatmentSessions'), // Updated endpoint for sessions
         ]);
 
         if (
+          !userResponse.ok ||
           !patientsResponse.ok ||
           !treatmentResponse.ok ||
           !overdoseResponse.ok ||
@@ -31,15 +34,15 @@ const Dashboard = () => {
         ) {
           throw new Error('Network response was not ok');
         }
-
+        const userData = await userResponse.json()
         const patientsData = await patientsResponse.json();
         const overdoseData = await overdoseResponse.json();
         const treatmentData = await treatmentResponse.json();
         const sessionsData = await sessionsResponse.json(); // Get sessions data
-
+        console.log(userData);
         setTotalPatients(patientsData.length || 0);
         setPatients(patientsData);
-        setOverdoseIncidents(overdoseData.overdoseIncidents || []);
+        setOverdoseIncidents(overdoseData.length || 0);
         setTreatmentPrograms(treatmentData);
         setTreatmentSessions(sessionsData); // Set sessions data
       } catch (error) {
@@ -91,7 +94,7 @@ const Dashboard = () => {
         <div className="flex flex-row">
           <Sidebar />
           <div className="ml-64 p-4 w-full">
-            <h1 className="text-2xl font-bold">Dashboard</h1>
+            <h1 className="text-2xl font-bold">Welcome </h1>
             <div className="gap-6 mt-4 w-full flex flex-row flex-wrap">
               {/* Card 1: Total Patients */}
               <div className="bg-white p-6 rounded-lg shadow-md flex-1 min-w-[250px]">
@@ -101,18 +104,8 @@ const Dashboard = () => {
 
               {/* Card 4: Overdose Incidents */}
               <div className="bg-white p-6 rounded-lg shadow-md flex-1 min-w-[250px]">
-                <h2 className="text-xl font-semibold">Overdose Incidents</h2>
-                <ul className="mt-2">
-                  {overdoseIncidents.length > 0 ? (
-                    overdoseIncidents.map((incident, index) => (
-                      <li key={index}>
-                        <span>Severity: {incident.severity}, Count: {incident.count}</span>
-                      </li>
-                    ))
-                  ) : (
-                    <li>No incidents available</li>
-                  )}
-                </ul>
+                <h2 className="text-xl font-semibold">Total Overdose Incidents</h2>
+                <p className="text-2xl font-bold">{totalOverdoseIncidents}</p>
               </div>
 
               <div className="bg-white p-6 rounded-lg shadow-md w-full">
